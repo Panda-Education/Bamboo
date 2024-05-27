@@ -9,6 +9,14 @@
 **/*.ignore
 **/*.ignore.*
 
+### Generic Keep Pattern
+!**/*.keep.*
+!**/*.keep
+!**/keep.*
+!**/*.sample.*
+!**/sample.*
+!**/*.sample
+
 ### JS/TS Files
 **/node_modules/
 **/DIST/
