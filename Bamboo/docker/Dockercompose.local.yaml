@@ -1,0 +1,25 @@
+version: "3.9"
+name: "panda-bamboo-local"
+
+services:
+  pb-postgres:
+    image: postgres:latest
+    container_name: pb-postgres
+    volumes:
+      - pb-postgres-persist:/var/lib/postgresql/data
+    networks:
+      - internal
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "9000:5432"
+
+
+
+networks:
+  internal:
+
+volumes:
+  pb-postgres-persist:
