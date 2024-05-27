@@ -1,0 +1,24 @@
+
+
+### Sensitive Files
+**/*.env
+**/env.*
+**/*.env.*
+
+### Generic Ignore Pattern
+**/*.ignore
+**/*.ignore.*
+
+### JS/TS Files
+**/node_modules/
+**/DIST/
+**/build/
+**/*.angular/
+
+### Project Workspace Files
+**/*.idea
+**/*.vs-code
+**/*.iml
+
+### MacOS Files
+**/.DS_Store
