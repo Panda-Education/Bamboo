@@ -13,6 +13,114 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id String @id @default(uuid())
+model Tutor {
+  id String @id @default(cuid())
+  name String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  courses Course[] @relation("TutorCourses")
+  adminCourses Course[] @relation("AdminCourses")
+  studentGroups StudentGroup[]
+}
+
+model Student {
+  id String @id @default(cuid())
+  name String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  courses Course[]
+  studentGroups StudentGroup[]
+  assignments Assignment[]
+  submissions Submission[] 
+}
+
+model StudentGroup {
+  id String @id @default(cuid())
+  name String @db.VarChar(255)
+  students Student[]
+  courseId String
+  managerId String
+  course Course @relation(fields: [courseId], references: [id])
+  manager Tutor @relation(fields: [managerId], references: [id])
+}
+
+model Course {
+  id String @id @unique @db.VarChar(255)
+  title String @db.VarChar(255)
+  tutors Tutor[] @relation("TutorCourses")
+  AdminId String
+  courseAdmin Tutor @relation("AdminCourses",fields: [AdminId], references: [id])
+  students Student[]
+  studentGroups StudentGroup[]
+  announcements Announcements[]
+  description Description[]
+  topics Topic[]
+  assignments Assignment[]
+}
+
+model Announcements {
+  id String @id @default(cuid())
+  title String @db.VarChar(255)
+  description String @db.VarChar(255)
+  announcementDate DateTime @default(now())
+  courseId String
+  course Course @relation(fields: [courseId], references: [id])
+}
+
+model Description {
+  id String @id @default(cuid())
+  summary String @db.VarChar(255)
+  subjectDetails String @db.VarChar(255)
+  courseId String
+  course Course @relation(fields: [courseId], references: [id])
+}
+
+model Topic {
+  id String @id @default(cuid())
+  title String @db.VarChar(255)
+  description String @db.VarChar(255)
+  courseId String
+  course Course @relation(fields: [courseId], references: [id])
+  resources Resource[]
+}
+
+model Resource {
+  id String @id @default(cuid())
+  title String @db.VarChar(255)
+  description String @db.VarChar(255)
+  courseId String
+  topicId String
+  topic Topic @relation(fields: [topicId], references: [id])
+  videoContent String?
+  documentFile String
+  richText String
+}
+
+model Assignment {
+  id String @id @default(cuid())
+  quizzes Quiz[]
+  Submissions Submission[]
+  courseId String
+  course Course @relation(fields: [courseId], references: [id])
+  students Student[]
+}
+
+model Quiz {
+  id String @id @default(cuid())
+  title String @db.VarChar(255)
+  description String @db.VarChar(255)
+  releaseDate DateTime @default(now())
+  dueDate DateTime
+  Status String
+  assignmentId String
+  assignment Assignment @relation(fields: [assignmentId], references: [id])
+}
+
+model Submission {
+  id String @id @default(cuid())
+  submissionDate DateTime @default(now())
+  releaseDate DateTime
+  assignmentId String
+  assignment Assignment @relation(fields: [assignmentId], references: [id])
+  submittedBy Student[]
 }
