@@ -42,11 +42,14 @@ model StudentGroup {
   managerId String
   course Course @relation(fields: [courseId], references: [id])
   manager Tutor @relation(fields: [managerId], references: [id])
+  assignments Assignment[]
 }
 
 model Course {
   id String @id @unique @db.VarChar(255)
   title String @db.VarChar(255)
+  createdOn DateTime @default(now())
+  updatedOn DateTime @default(now())
   tutors Tutor[] @relation("TutorCourses")
   AdminId String
   courseAdmin Tutor @relation("AdminCourses",fields: [AdminId], references: [id])
@@ -82,6 +85,9 @@ model Topic {
   courseId String
   course Course @relation(fields: [courseId], references: [id])
   resources Resource[]
+  parentId String?
+  parentTopic Topic? @relation("TopicToSubTopic", fields: [parentId], references: [id])
+  subTopics Topic[] @relation("TopicToSubTopic")
 }
 
 model Resource {
@@ -103,6 +109,7 @@ model Assignment {
   courseId String
   course Course @relation(fields: [courseId], references: [id])
   students Student[]
+  studentGroups StudentGroup[]
 }
 
 model Quiz {
