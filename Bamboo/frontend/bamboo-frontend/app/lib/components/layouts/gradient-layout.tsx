@@ -13,6 +13,7 @@ export default function GradientLayout(
     <div className={`
     w-full h-full
     min-h-[100dvh]
+    max-w-[100dvw]
     flex 
     flex-col justify-start
     items-stretch
@@ -21,10 +22,11 @@ export default function GradientLayout(
 
       {/*Children elements*/}
       <div className={`
-      w-full bg-white dark:bg-slate-950
+      w-full min-h-[100dvh] 
       flex-shrink-0
-      max-w-full md:max-w-prose
-      px-gutter
+      bg-white dark:bg-slate-950
+      md:max-w-prose
+      px-gutter pt-5
       md:p-gutter
       flex flex-col justify-start items-stretch
       md:justify-center md:items-center
