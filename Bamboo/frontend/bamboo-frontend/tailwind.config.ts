@@ -19,6 +19,9 @@ const config = {
       },
     },
     extend: {
+      spacing: {
+        gutter: "14px"
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
