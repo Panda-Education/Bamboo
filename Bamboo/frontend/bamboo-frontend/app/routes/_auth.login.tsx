@@ -57,7 +57,7 @@ export default function LoginRoute(){
 
   return(
     <GradientLayout>
-      <div className={`flex flex-col justify-start items-stretch gap-y-6`}>
+      <div className={`flex flex-col justify-start items-stretch gap-y-6 md:w-[45ch] max-w-full`}>
         <CardHeader title={"Login"} subtitle={"Enter your email below to login to your account"}/>
         <Form {...form}>
           <form className={`grid grid-cols-2 gap-2`} onSubmit={form.handleSubmit(submitForm)}>
@@ -87,12 +87,12 @@ export default function LoginRoute(){
                 </FormItem>
               )}
             />
-            <Button type={'submit'} variant={'default'} className={`col-span-2 -mb-4 mt-4`}>Login</Button>
+            <div className={`flex flex-col justify-start items-stretch mt-4 gap-y-2 col-span-2`}>
+              <Button type={'submit'} variant={'default'} className={``}>Login</Button>
+              <Button type={'button'} variant={'outline'}>Login with Google</Button>
+            </div>
           </form>
         </Form>
-        <div className={`flex flex-col justify-start items-stretch gap-y-2`}>
-          <Button variant={'outline'}>Login with Google</Button>
-        </div>
         <div className={`w-full text-center text-slate-900 dark:text-white`}>
           <span>Don't have an account? </span>
           <span className={`decoration-1 underline underline-offset-4`}><Link to={"/register"}>Sign up</Link></span>
