@@ -1,6 +1,7 @@
 {
   "app": {
-  "fragments": {},
+  "fragments": {
+  },
   "inputs": [
     "./prisma/_*.prisma",
     "./prisma/relations/**/*.prisma"
