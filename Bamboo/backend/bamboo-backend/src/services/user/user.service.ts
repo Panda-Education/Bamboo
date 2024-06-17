@@ -14,12 +14,19 @@ export class UserService {
   ) {
   }
 
-  async createUser(userEmail:string, userPassword:string){
+  async createUser(
+    userFirstName:string,
+    userLastName:string,
+    userEmail:string,
+    userPassword:string,
+  ){
 
     const password = await this.passwordService.hashPassword(userPassword)
 
     const newUser = await this.prismaService.prisma.user.create({
       data: {
+        firstName: userFirstName,
+        lastName: userLastName,
         email: userEmail,
         password: password
       }

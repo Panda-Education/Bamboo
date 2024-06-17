@@ -7,11 +7,12 @@ import CardHeader from '@/components/card-title';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/shadcn/ui/form';
 import { Input } from '@/components/shadcn/ui/input';
 import { Button } from '@/components/shadcn/ui/button';
-import { Link } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import React, { useState } from 'react';
 import TextHorizontalDivider from '@/components/text-horizontal-divider';
 import { RegisterUserEmailPassword } from '~/services/auth/register_email_password';
 import { useServices } from '~/services/provider';
+import * as process from 'node:process';
 
 
 export const meta: MetaFunction = () => {
@@ -30,7 +31,22 @@ export const meta: MetaFunction = () => {
   ]
 }
 
+export async function loader(){
+
+  const BACKEND:string = process.env.BACKEND || ""
+
+  return {
+    BACKEND
+  }
+
+}
+
+
 export default function RegisterRoute(){
+
+  const {BACKEND} = useLoaderData<{
+    BACKEND:string
+  }>()
 
   const { auth } = useServices()
   const [loading, setLoading] = useState<boolean>(false)
@@ -89,6 +105,7 @@ export default function RegisterRoute(){
       console.log(data)
       setLoading(true)
       auth.register.emailAndPassword(
+        BACKEND,
         data.firstName, data.lastName,
         data.email, data.password
       ).then(()=>{setLoading(false)})
