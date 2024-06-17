@@ -23,7 +23,12 @@ export class RegisterController {
     @Body() body: RegisterUserFromEmailPassword
   ){
 
-    await this.userService.createUser(body.email, body.password)
+    await this.userService.createUser(
+      body.firstName,
+      body.lastName,
+      body.email,
+      body.password
+    )
     return {message:"ok"}
   }
 
