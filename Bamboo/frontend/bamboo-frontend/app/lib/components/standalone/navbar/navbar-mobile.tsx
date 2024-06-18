@@ -47,7 +47,7 @@ export default function NavbarMobile(
           <Menu />
         </SheetTrigger>
         <SheetContent>
-          <div className={`
+          <nav className={`
           h-full
           flex flex-col justify-start items-stretch
           pt-8
@@ -56,7 +56,7 @@ export default function NavbarMobile(
             <div className={`w-full h-full flex flex-col justify-end items-stretch`}>
               <NavbarAccount />
             </div>
-          </div>
+          </nav>
           <SheetClose asChild ref={closeButtonRef} className={`hidden`}>
             <Button>Close</Button>
           </SheetClose>
