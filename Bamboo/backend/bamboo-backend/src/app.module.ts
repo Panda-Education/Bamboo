@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,12 +12,10 @@ import { configDotenv } from 'dotenv';
 import { PasswordService } from './services/password/password.service';
 import * as process from 'node:process';
 
-
-
 //// Load environment variables
 configDotenv({
-  path: `./.env.${process.env.NODE_ENV || 'local'}`
-})
+  path: `./.env.${process.env.NODE_ENV || 'local'}`,
+});
 
 @Module({
   imports: [
@@ -29,11 +28,11 @@ configDotenv({
         module: AuthModule,
         children: [
           {
-            path: "register",
-            module: RegisterModule
-          }
-        ]
-      }
+            path: 'register',
+            module: RegisterModule,
+          },
+        ],
+      },
     ]),
   ],
   controllers: [AppController],

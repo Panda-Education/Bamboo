@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { RegisterController } from './register.controller';
 import { NestjsFormDataModule } from 'nestjs-form-data';
