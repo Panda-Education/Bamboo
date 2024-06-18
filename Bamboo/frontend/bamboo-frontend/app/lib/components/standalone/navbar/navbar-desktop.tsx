@@ -1,4 +1,5 @@
 import NavbarLogo from '@/components/standalone/navbar/navbar-logo';
+import NavbarAccount from '@/components/standalone/navbar/navbar-account';
 
 
 export default function NavbarDesktop(
@@ -11,6 +12,7 @@ export default function NavbarDesktop(
 
   return(
     <div className={`
+    relative
     hidden md:flex
     flex-col justify-start items-start
     p-3 h-full w-[20ch] max-w-full
@@ -23,6 +25,14 @@ export default function NavbarDesktop(
       `}>
         {children}
       </div>
+      <div className={`
+      bg-white bg-opacity-50
+      absolute left-0 bottom-0 right-0
+      p-gutter backdrop-blur-lg
+      `}>
+        <NavbarAccount />
+      </div>
     </div>
+
   )
 }

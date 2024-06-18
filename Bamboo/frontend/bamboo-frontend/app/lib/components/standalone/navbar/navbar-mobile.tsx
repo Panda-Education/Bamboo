@@ -1,9 +1,10 @@
 import NavbarLogo from '@/components/standalone/navbar/navbar-logo';
 import { Menu } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/shadcn/ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetTrigger } from '@/components/shadcn/ui/sheet';
 import { Button } from '@/components/shadcn/ui/button';
 import { useLocation } from '@remix-run/react';
+import NavbarAccount from '@/components/standalone/navbar/navbar-account';
 
 
 export default function NavbarMobile(
@@ -47,10 +48,14 @@ export default function NavbarMobile(
         </SheetTrigger>
         <SheetContent>
           <div className={`
+          h-full
           flex flex-col justify-start items-stretch
-          mt-8
+          pt-8
           `}>
             {children}
+            <div className={`w-full h-full flex flex-col justify-end items-stretch`}>
+              <NavbarAccount />
+            </div>
           </div>
           <SheetClose asChild ref={closeButtonRef} className={`hidden`}>
             <Button>Close</Button>
