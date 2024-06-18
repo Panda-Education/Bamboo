@@ -7,9 +7,12 @@ import CardHeader from '@/components/card-title';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/shadcn/ui/form';
 import { Input } from '@/components/shadcn/ui/input';
 import { Button } from '@/components/shadcn/ui/button';
-import { Link } from '@remix-run/react';
-import React from 'react';
+import { Link, useLoaderData } from '@remix-run/react';
+import React, { useState } from 'react';
 import TextHorizontalDivider from '@/components/text-horizontal-divider';
+import { RegisterUserEmailPassword } from '~/services/auth/register_email_password';
+import { useServices } from '~/services/provider';
+import * as process from 'node:process';
 
 
 export const meta: MetaFunction = () => {
@@ -28,17 +31,61 @@ export const meta: MetaFunction = () => {
   ]
 }
 
+export async function loader(){
+
+  const BACKEND:string = process.env.BACKEND || ""
+
+  return {
+    BACKEND
+  }
+
+}
+
+
 export default function RegisterRoute(){
 
-  const nameRegex = /^[a-zA-Z]+$/
+  const {BACKEND} = useLoaderData<{
+    BACKEND:string
+  }>()
+
+  const { auth } = useServices()
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const nameRegex = /^[a-zA-Z\s]+$/
 
   const registerFormSchema = z.object({
-    firstName: z.string().regex(nameRegex),
-    lastName: z.string().regex(nameRegex),
-    email: z.string(),
-    password: z.string(),
-    confirmPassword: z.string(),
-  })
+
+    firstName: z.string()
+      .min(1, "Required")
+      .regex(nameRegex, "First names can only contain letters and spaces"),
+
+    lastName: z.string()
+      .min(1, "Required")
+      .regex(nameRegex, "Last names can only contain letters and spaces"),
+
+    email: z.string()
+      .min(1, "Required")
+      .email("Invalid email format")
+      .refine(email => !email.includes('+'), {
+        message: "Alias emails are not allowed"
+      }),
+
+    password: z.string()
+      .min(1, "Required")
+      .min(8, "Passwords must be at least 8 characters long"),
+
+    confirmPassword: z.string()
+      .min(1, "Required"),
+
+  }).refine(
+    (val) => {return val.confirmPassword === val.password},
+    (val) => {
+      return {
+        message: "Passwords do not match",
+        path: ['confirmPassword']
+      }
+    }
+  )
 
   type RegisterFormType = z.infer<typeof registerFormSchema>
 
@@ -54,7 +101,15 @@ export default function RegisterRoute(){
   })
 
   const submitForm = (data:RegisterFormType) => {
-    console.log(data)
+    if(!loading){
+      console.log(data)
+      setLoading(true)
+      auth.register.emailAndPassword(
+        BACKEND,
+        data.firstName, data.lastName,
+        data.email, data.password
+      ).then(()=>{setLoading(false)})
+    }
   }
 
   return(
@@ -129,11 +184,11 @@ export default function RegisterRoute(){
               )}
             />
             <div className={`flex flex-col justify-start items-stretch gap-y-2 col-span-2`}>
-              <Button type={'submit'} variant={'default'} className={`col-span-2 mt-2`}>Create an account</Button>
+              <Button loading={loading} type={'submit'} variant={'default'} className={`col-span-2 mt-2`}>Create an account</Button>
               <TextHorizontalDivider>
                 or
               </TextHorizontalDivider>
-              <Button variant={'outline'}>Continue with Google</Button>
+              <Button type={"button"} variant={'outline'}>Continue with Google</Button>
             </div>
           </form>
         </Form>

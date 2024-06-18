@@ -1,0 +1,13 @@
+model User {
+  id String @id @default(cuid())
+
+  firstName String @default("UNKNOWN FIRST NAME")
+  lastName  String @default("UNKNOWN LAST NAME")
+  email     String @unique
+  password  String
+
+  initialised Boolean @default(false)
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
