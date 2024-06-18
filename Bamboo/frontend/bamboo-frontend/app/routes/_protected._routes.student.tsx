@@ -5,7 +5,7 @@ import { Folders, LayoutDashboardIcon, UserPlus2Icon, Users2Icon } from 'lucide-
 import NavbarGroupContainer from '@/components/standalone/navbar/navbar-group-container';
 
 
-export default function TutorLayout() {
+export default function StudentLayout() {
 
   return(
     <div className={`
@@ -15,13 +15,8 @@ export default function TutorLayout() {
       min-h-screen max-w-screen
       `}>
       <Navbar>
-        <NavbarElement url={"/tutor/"} icon={<LayoutDashboardIcon />}>Dashboard</NavbarElement>
-        <NavbarElement url={"/tutor/courses"} icon={<Folders />}>Courses</NavbarElement>
-
-        <NavbarGroupContainer name={"SRM"}>
-          <NavbarElement url={"/tutor/my-students"} icon={<Users2Icon />}>Students</NavbarElement>
-          <NavbarElement url={"/tutor/my-students/enroll"} icon={<UserPlus2Icon />}>Enroll Students</NavbarElement>
-        </NavbarGroupContainer>
+        <NavbarElement url={"/student/"} icon={<LayoutDashboardIcon />}>Dashboard</NavbarElement>
+        <NavbarElement url={"/student/courses"} icon={<Folders />}>Courses</NavbarElement>
       </Navbar>
       <div className={`
       flex-grow-1
