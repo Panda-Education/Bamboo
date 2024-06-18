@@ -19,12 +19,12 @@ export default function NavbarDesktop(
     border-r border-solid border-px border-slate-300
     `}>
       <NavbarLogo />
-      <div className={`
+      <nav className={`
       flex flex-col justify-start items-stretch
       w-full
       `}>
         {children}
-      </div>
+      </nav>
       <div className={`
       bg-white bg-opacity-50
       absolute left-0 bottom-0 right-0
