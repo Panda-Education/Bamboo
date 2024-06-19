@@ -11,6 +11,7 @@ import { DbPrismaService } from './services/db/db-prisma/db-prisma.service';
 import { configDotenv } from 'dotenv';
 import { PasswordService } from './services/password/password.service';
 import * as process from 'node:process';
+import { GoogleModule } from './routes/auth/google/google.module';
 
 //// Load environment variables
 configDotenv({
@@ -31,6 +32,10 @@ configDotenv({
             path: 'register',
             module: RegisterModule,
           },
+          {
+            path: 'google',
+            module: GoogleModule 
+          }
         ],
       },
     ]),

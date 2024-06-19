@@ -38,4 +38,21 @@ export class UserService {
 
   }
 
+  async findOrCreate(user: any) {
+    const existingUser = await this.prismaService.prisma.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+  
+    if (!existingUser) {
+      const names = user.name.split(' ');
+      const firstName = names[0];
+      const lastName = names[1];
+
+      this.createUser(firstName, lastName, user.email, '')
+    }
+  
+    return user;
+  }
 }
