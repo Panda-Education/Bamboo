@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../../services/user/user.service';
+import { oAuthUserObject } from './oAuthType';
 
 @Injectable()
 export class GoogleAuthService {
@@ -10,7 +11,7 @@ export class GoogleAuthService {
         private jwtService: JwtService,
     ) {}
 
-    async oAuthLogin(user: any) {
+    async oAuthLogin(user: oAuthUserObject) {
         // Find or create a user based on the Google ID
         const dbUser = await this.usersService.findOrCreate(user);
 

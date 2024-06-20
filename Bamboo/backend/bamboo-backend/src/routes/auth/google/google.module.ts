@@ -21,7 +21,7 @@ import { PasswordService } from '../../../services/password/password.service';
         useFactory: () => ({
             secret: process.env.JWT_SECRET,
             signOptions: {
-            expiresIn: '3d',
+            expiresIn: '1d',
             },
             global: true,
         })

@@ -12,9 +12,8 @@ export class GoogleController {
     @UseGuards(GoogleOauthGuard)
     async googleAuthCallback(@Req() req, @Res() res: Response) {
         try {
-            console.log(req)
             const token = await this.authService.oAuthLogin(req.user);
-            // res.redirect(`http://localhost:5173/oauth?token=${token.jwt}`);
+            res.redirect(`http://localhost:5173/welcome`);
             console.log("Successful Google sign in")
             console.log(token.jwt)
         } catch (err) {

@@ -6,6 +6,7 @@ import {
 } from '../../dto/auth/register-user-from-email-password/register-user-from-email-password';
 import { DbPrismaService } from '../db/db-prisma/db-prisma.service';
 import { PasswordService } from '../password/password.service';
+import { oAuthUserObject } from '../../routes/auth/google/oAuthType';
 
 @Injectable()
 export class UserService {
@@ -38,7 +39,7 @@ export class UserService {
 
   }
 
-  async findOrCreate(user: any) {
+  async findOrCreate(user: oAuthUserObject) {
     const existingUser = await this.prismaService.prisma.user.findUnique({
       where: {
         email: user.email,
