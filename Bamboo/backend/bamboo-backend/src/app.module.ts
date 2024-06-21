@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,13 +11,12 @@ import { DbPrismaService } from './services/db/db-prisma/db-prisma.service';
 import { configDotenv } from 'dotenv';
 import { PasswordService } from './services/password/password.service';
 import * as process from 'node:process';
-
-
+import { GoogleModule } from './routes/auth/google/google.module';
 
 //// Load environment variables
 configDotenv({
-  path: `./.env.${process.env.NODE_ENV || 'local'}`
-})
+  path: `./.env.${process.env.NODE_ENV || 'local'}`,
+});
 
 @Module({
   imports: [
@@ -29,11 +29,15 @@ configDotenv({
         module: AuthModule,
         children: [
           {
-            path: "register",
-            module: RegisterModule
+            path: 'register',
+            module: RegisterModule,
+          },
+          {
+            path: 'google',
+            module: GoogleModule 
           }
-        ]
-      }
+        ],
+      },
     ]),
   ],
   controllers: [AppController],

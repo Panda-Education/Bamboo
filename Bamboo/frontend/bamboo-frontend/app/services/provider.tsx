@@ -3,11 +3,11 @@ import { RegisterUserEmailPassword } from '~/services/auth/register_email_passwo
 import { RegisterGoogle } from '~/services/auth/register_google';
 
 
-
 const services = {
   auth: {
     register: {
-      emailAndPassword: RegisterUserEmailPassword
+      emailAndPassword: RegisterUserEmailPassword,
+      google: RegisterGoogle
     }
   }
 }

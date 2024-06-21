@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Body, Controller, Post, Req, Res, UseInterceptors } from '@nestjs/common';
 import { FormDataInterceptor } from 'nestjs-form-data/dist/interceptors/FormData.interceptor';
 import { UserService } from '../../../services/user/user.service';
