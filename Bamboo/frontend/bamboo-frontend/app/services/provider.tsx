@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
 import { RegisterUserEmailPassword } from '~/services/auth/register_email_password';
+import { RegisterGoogle } from '~/services/auth/register_google';
 
 
 
