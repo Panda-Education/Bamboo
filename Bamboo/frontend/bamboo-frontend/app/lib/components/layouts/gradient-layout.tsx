@@ -5,7 +5,7 @@ export default function GradientLayout(
   {
     children
   }:{
-    children:any
+    children?:any
   }
 ){
 

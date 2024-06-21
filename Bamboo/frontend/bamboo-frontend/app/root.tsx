@@ -10,6 +10,7 @@ import type { LinksFunction } from "@remix-run/node";
 import styles from "./tailwind.css?url";
 import { Toaster } from '@/components/shadcn/ui/sonner';
 import { ServiceProvider } from '~/services/provider';
+import { Provider } from 'jotai';
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
@@ -24,14 +25,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <ServiceProvider>
-        <body>
+      <Provider>
+        <ServiceProvider>
+          <body>
           <Toaster richColors />
           {children}
           <ScrollRestoration />
           <Scripts />
-        </body>
-      </ServiceProvider>
+          </body>
+        </ServiceProvider>
+      </Provider>
     </html>
   );
 }
