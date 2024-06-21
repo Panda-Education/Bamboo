@@ -1,12 +1,13 @@
 import { createContext, useContext } from 'react';
-import { RegisterUserEmailPassword } from '~/services/auth/register_email_password';
-
+import { RegisterUserEmailPassword } from '../services/auth/register_email_password';
+import { RegisterGoogle } from '../services/auth/register_google';
 
 
 const services = {
   auth: {
     register: {
-      emailAndPassword: RegisterUserEmailPassword
+      emailAndPassword: RegisterUserEmailPassword,
+      google: RegisterGoogle
     }
   }
 }

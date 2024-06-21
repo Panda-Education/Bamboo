@@ -11,6 +11,7 @@ import { Link, useLoaderData } from '@remix-run/react';
 import React, { useState } from 'react';
 import TextHorizontalDivider from '@/components/text-horizontal-divider';
 import { RegisterUserEmailPassword } from '~/services/auth/register_email_password';
+import { RegisterGoogle } from '~/services/auth/register_google';
 import { useServices } from '~/services/provider';
 import * as process from 'node:process';
 
@@ -112,6 +113,17 @@ export default function RegisterRoute(){
     }
   }
 
+  const submitGoogleForm = () => {
+    if (!loading) {
+      setLoading(true);
+      auth.register.google(
+        BACKEND
+      ).then(() => {
+        setLoading(false);
+      });
+    }
+  };
+
   return(
     <GradientLayout>
       <div className={`flex flex-col justify-start items-stretch gap-y-6 md:w-[45ch] max-w-full`}>
@@ -188,7 +200,7 @@ export default function RegisterRoute(){
               <TextHorizontalDivider>
                 or
               </TextHorizontalDivider>
-              <Button type={"button"} variant={'outline'}>Continue with Google</Button>
+              <Button type={"button"} variant={'outline'} onClick={submitGoogleForm}>Continue with Google</Button>
             </div>
           </form>
         </Form>
