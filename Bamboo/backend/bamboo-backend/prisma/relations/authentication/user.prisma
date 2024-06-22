@@ -10,4 +10,6 @@ model User {
 
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([email])
 }

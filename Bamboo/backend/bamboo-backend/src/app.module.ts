@@ -12,6 +12,9 @@ import { configDotenv } from 'dotenv';
 import { PasswordService } from './services/password/password.service';
 import * as process from 'node:process';
 import { GoogleModule } from './routes/auth/google/google.module';
+import { InitialiseModule } from './routes/auth/initialise/initialise.module';
+import { PandaJwtService } from './auth/panda-jwt/panda-jwt.service';
+import { PandaJwtModule } from './auth/panda-jwt/panda-jwt.module';
 
 //// Load environment variables
 configDotenv({
@@ -21,8 +24,9 @@ configDotenv({
 @Module({
   imports: [
     NestjsFormDataModule,
-    AuthModule,
     RegisterModule,
+    InitialiseModule,
+    GoogleModule,
     RouterModule.register([
       {
         path: 'auth',
@@ -35,10 +39,15 @@ configDotenv({
           {
             path: 'google',
             module: GoogleModule 
+          },
+          {
+            path: 'initialise',
+            module: InitialiseModule
           }
         ],
       },
     ]),
+    PandaJwtModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService, DbPrismaService, PasswordService],

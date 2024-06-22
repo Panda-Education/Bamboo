@@ -1,9 +1,14 @@
+/* eslint-disable prettier/prettier */
 
 
-export const JWT_HEADER_NAME = "PANDA_BAMBOO_JWT"
+import { UserAccountTypes } from './user.account.types';
 
 export type JwtPayload = {
+  id: string,
   email: string,
   firstName: string,
   lastName: string,
+  userType: UserAccountTypes
 }
+
+export type JwtString = string

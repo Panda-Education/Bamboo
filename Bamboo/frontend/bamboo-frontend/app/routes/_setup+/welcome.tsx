@@ -3,11 +3,35 @@ import CardHeader from '@/components/card-title';
 import SelectChunky from '@/components/standalone/select-chunky/select-chunky';
 import { SelectChunkyOptionType } from '@/components/standalone/select-chunky/select-chunky.type';
 import { useState } from 'react';
+import { json, useLoaderData } from '@remix-run/react';
 import { Button } from '@/components/shadcn/ui/button';
+import { LoaderFunction } from '@remix-run/node';
+import { parse } from 'cookie';
+import jwt from 'jsonwebtoken';
+import { useServices } from '~/services/provider';
+
+// //Loader function for cookies
+export const loader: LoaderFunction = async ({request}) => {
+
+  const BACKEND = process.env.BACKEND || ""
+
+  const cookieHeader = request.headers.get('Cookie')
+  const cookies = parse(cookieHeader || "")
+  const token = cookies['jwt']
+
+  // Return JWT to make it available in the component
+  return json({jwt: token, BACKEND})
+}
 
 
 export default function SetupWelcomePage(){
 
+  const { jwt, BACKEND } = useLoaderData<{
+    jwt: string,
+    BACKEND: string
+  }>()
+
+  const { auth } = useServices()
   const [selectState, setSelectState] = useState<string>("")
 
   const options:SelectChunkyOptionType[] = [
@@ -30,6 +54,11 @@ export default function SetupWelcomePage(){
   const handleButtonClick = () => {
     if(selectState){
       console.log(`SUBMIT RESPONSE HERE!, ${selectState}`)
+      auth.initilaise.accountType(
+        BACKEND,
+        selectState,
+        jwt
+      )
     }
   }
 

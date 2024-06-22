@@ -1,22 +1,22 @@
 model Tutor {
   id            String         @id @default(cuid())
-  name          String
   email         String         @unique
-  password      String
   courses       Course[]       @relation("TutorCourses")
   adminCourses  Course[]       @relation("AdminCourses")
   studentGroups StudentGroup[]
+
+  @@index([email])
 }
 
 model Student {
   id            String         @id @default(cuid())
-  name          String
   email         String         @unique
-  password      String
   courses       Course[]
   studentGroups StudentGroup[]
   assignments   Assignment[]
   submissions   Submission[]
+
+  @@index([email])
 }
 
 model StudentGroup {

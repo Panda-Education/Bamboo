@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import { RegisterUserEmailPassword } from '~/services/auth/register_email_password';
 import { RegisterGoogle } from '~/services/auth/register_google';
+import { InitialiseAccountType } from './initialise/initialise_account_type';
 
 
 const services = {
@@ -8,6 +9,9 @@ const services = {
     register: {
       emailAndPassword: RegisterUserEmailPassword,
       google: RegisterGoogle
+    },
+    initilaise: {
+      accountType: InitialiseAccountType
     }
   }
 }

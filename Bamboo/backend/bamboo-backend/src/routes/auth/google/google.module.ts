@@ -16,17 +16,7 @@ import { PasswordService } from '../../../services/password/password.service';
 
 @Module({
     controllers: [GoogleController],
-    imports: [
-        JwtModule.registerAsync({
-        useFactory: () => ({
-            secret: process.env.JWT_SECRET,
-            signOptions: {
-            expiresIn: '1d',
-            },
-            global: true,
-        })
-        }),
-    ],
+    imports: [],
     providers: [GoogleAuthService, JwtGuardStrategy, JwtGuard, GoogleStrategy,UserService, DbPrismaService, PasswordService],
     })
 export class GoogleModule { }
