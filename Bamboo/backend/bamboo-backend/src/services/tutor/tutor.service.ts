@@ -15,10 +15,7 @@ export class TutorService {
     ): Promise<Tutor>{
         return this.prismaService.prisma.tutor.create({
             data: {
-                firstName: jwt.firstName,
-                lastName: jwt.lastName,
                 email: jwt.email,
-                password: undefined,
             }
         });
     }

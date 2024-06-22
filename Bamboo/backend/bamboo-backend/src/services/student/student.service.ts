@@ -15,10 +15,7 @@ export class StudentService {
     ): Promise<Student>{
         return this.prismaService.prisma.student.create({
             data: {
-                firstName: jwt.firstName,
-                lastName: jwt.lastName,
                 email: jwt.email,
-                password: undefined,
             }
         });
     }

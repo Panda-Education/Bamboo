@@ -4,24 +4,28 @@ import { FormDataInterceptor } from "nestjs-form-data/dist/interceptors/FormData
 import jwt from 'jsonwebtoken';
 import { JwtPayload } from "src/types/auth.jwt.types";
 import { InitialiseService } from "./initialise.service";
+import { TodoAny } from '../../../types/_todo.types';
+import { Response } from 'express';
+import { PandaJwtService } from '../../../auth/panda-jwt/panda-jwt.service';
 
 @Controller('')
 export class InitialiseController {
     constructor (
-        private initialiseService: InitialiseService
+        private initialiseService: InitialiseService,
+        private pandaJwtService: PandaJwtService
     ) {
     }
 
     @Post()
     @UseInterceptors(FormDataInterceptor)
     async initialiseAccountType(
-        @Body() body,
-        @Res() res
+        @Body() body: TodoAny,
+        @Res() res: Response
     ){
-        const decoded: JwtPayload = jwt.decode(body.jwt) as JwtPayload;
+        const decoded: JwtPayload = await this.pandaJwtService.validate(body.jwt)
         try {
             const { accountJwt } = await this.initialiseService.initialiseAccount(
-                body.accountType,
+                body.accountType.toUpperCase(),
                 decoded
             )
             res.cookie('accountJwt', accountJwt, { httpOnly: true, path: '/' })

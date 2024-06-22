@@ -7,6 +7,7 @@ import { PasswordService } from '../password/password.service';
 import { OAuthUserObject } from '../../types/auth.oauth.types';
 import { User } from '@prisma/client';
 import { JwtPayload } from 'src/types/auth.jwt.types';
+import { UserAccountTypes } from '../../types/user.account.types';
 
 @Injectable()
 export class UserService {

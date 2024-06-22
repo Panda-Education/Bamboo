@@ -6,6 +6,8 @@ import { StudentService } from 'src/services/student/student.service';
 import { TutorService } from 'src/services/tutor/tutor.service';
 import { AccountJwtPayload } from 'src/types/auth.account.types';
 import { JwtPayload } from 'src/types/auth.jwt.types';
+import { UserAccountTypes } from '../../../types/user.account.types';
+import { PandaJwtService } from '../../../auth/panda-jwt/panda-jwt.service';
 
 @Injectable()
 export class InitialiseService {
@@ -13,36 +15,37 @@ export class InitialiseService {
         private usersService: UserService,
         private studentService: StudentService,
         private tutorService: TutorService,
-        private jwtService: JwtService,
+        private pandaJwtService: PandaJwtService
     ) {}
 
-    async initialiseAccount(accountType: string, jwt: JwtPayload){
+    async initialiseAccount(accountType: UserAccountTypes, jwt: JwtPayload){
+
+        let account = null
+        switch (accountType) {
+            case UserAccountTypes.Student:
+                account = await this.studentService.createStudent(jwt)
+                break;
+            case UserAccountTypes.Tutor:
+                account = await this.tutorService.createTutor(jwt)
+                break;
+            default:
+                throw "Unable to initialise account!"
+        }
+
         await this.usersService.initialiseAccount(
             jwt
         )
-        
-        let account = null
-        switch (accountType) {
-            case "student":
-                account = await this.studentService.createStudent(jwt)
-                break;
-            case "tutor":
-                account = await this.tutorService.createTutor(jwt)
-                break;
-        }
-        // Generate a new JWT token with the updated account
-        const firstName = account.name.split(' ')[0]
-        const lastName = account.name.split(' ')[1]
 
-        const accountPayload:AccountJwtPayload = {
+        const accountPayload:JwtPayload = {
+            id: account.id,
             email: account.email,
-            firstName: firstName,
-            lastName: lastName,
-            accountType: accountType,
+            firstName: account.firstName,
+            lastName: account.lastName,
+            userType: accountType,
         }
 
         return {
-            accountJwt: this.jwtService.sign(accountPayload),
+            accountJwt: await this.pandaJwtService.sign(accountPayload),
         }
     }
 }
