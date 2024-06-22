@@ -7,12 +7,14 @@ import { NestjsFormDataModule } from "nestjs-form-data";
 import { PasswordService } from "src/services/password/password.service";
 import { InitialiseService } from "./initialise.service";
 import { JwtService } from "@nestjs/jwt";
+import { StudentService } from "src/services/student/student.service";
+import { TutorService } from "src/services/tutor/tutor.service";
 
 @Module({
     imports: [
         NestjsFormDataModule,
     ],
     controllers: [InitialiseController],
-    providers: [UserService, DbPrismaService, PasswordService, InitialiseService, JwtService]
+    providers: [UserService, StudentService, TutorService, DbPrismaService, PasswordService, InitialiseService, JwtService]
 })
 export class InitialiseModule {}
