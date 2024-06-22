@@ -1,12 +1,11 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import {
-  RegisterUserFromEmailPassword
-} from '../../dto/auth/register-user-from-email-password/register-user-from-email-password';
 import { DbPrismaService } from '../db/db-prisma/db-prisma.service';
 import { PasswordService } from '../password/password.service';
-import { oAuthUserObject } from '../../routes/auth/google/oAuthType';
+
+import { OAuthUserObject } from '../../types/auth.oauth.types';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -21,25 +20,22 @@ export class UserService {
     userFirstName:string,
     userLastName:string,
     userEmail:string,
-    userPassword:string,
-  ){
+    userPassword?:string,
+  ):Promise<User>{
 
-    const password = await this.passwordService.hashPassword(userPassword)
-
-    const newUser = await this.prismaService.prisma.user.create({
+    return this.prismaService.prisma.user.create({
       data: {
         firstName: userFirstName,
         lastName: userLastName,
         email: userEmail,
-        password: password
+        password: userPassword?await this.passwordService.hashPassword(userPassword):undefined
       }
-    })
+    });
 
-    console.log(newUser)
 
   }
 
-  async findOrCreate(user: oAuthUserObject) {
+  async findOrCreate(user: OAuthUserObject): Promise<User> {
     const existingUser = await this.prismaService.prisma.user.findUnique({
       where: {
         email: user.email,
@@ -47,13 +43,10 @@ export class UserService {
     });
   
     if (!existingUser) {
-      const names = user.name.split(' ');
-      const firstName = names[0];
-      const lastName = names[1];
-
-      this.createUser(firstName, lastName, user.email, '')
+      return this.createUser(user.firstName, user.lastName, user.email, undefined)
     }
+
+    return existingUser
   
-    return user;
   }
 }
