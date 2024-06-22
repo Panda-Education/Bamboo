@@ -35,9 +35,10 @@ model User {
 
 model Tutor {
   id            String         @id @default(cuid())
-  name          String
+  firstName     String
+  lastName      String
   email         String         @unique
-  password      String
+  password      String?
   courses       Course[]       @relation("TutorCourses")
   adminCourses  Course[]       @relation("AdminCourses")
   studentGroups StudentGroup[]
@@ -45,9 +46,10 @@ model Tutor {
 
 model Student {
   id            String         @id @default(cuid())
-  name          String
+  firstName     String
+  lastName      String
   email         String         @unique
-  password      String
+  password      String?
   courses       Course[]
   studentGroups StudentGroup[]
   assignments   Assignment[]
