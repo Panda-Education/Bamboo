@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { GoogleAuthService } from './google.service';
@@ -14,6 +16,8 @@ export class GoogleController {
     async googleAuthCallback(@Req() req: TodoAny, @Res() res: Response) {
         try {
             const { jwt } = await this.authService.OAuthLogin(req.user);
+            // Set the JWT token as a cookie
+            res.cookie('jwt', jwt, { httpOnly: true, path: '/' });
             res.redirect(`http://localhost:5173/welcome`)
         } catch (err) {
         res.status(500).send({ success: false, message: err.message });
