@@ -5,6 +5,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { configDotenv } from 'dotenv';
 import { Profile } from 'passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
+import { OAuthUserObject } from '../../../types/auth.oauth.types';
 
 configDotenv();
 
@@ -27,13 +28,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     ): Promise<void> {
         const { id, name, emails, photos } = profile;
 
-        const user = {
-        provider: 'google',
-        providerId: id,
-        email: emails[0].value,
-        name: `${name.givenName} ${name.familyName}`,
-        picture: photos[0].value,
-        };
+        const user:OAuthUserObject = {
+            provider: 'google',
+            providerId: id,
+            email: emails[0].value,
+            firstName: profile.name.givenName || "",
+            lastName: profile.name.familyName || "",
+        }
 
         done(null, user);
     }

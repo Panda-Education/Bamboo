@@ -1,8 +1,9 @@
-/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../../services/user/user.service';
-import { oAuthUserObject } from './oAuthType';
+
+import { OAuthUserObject } from '../../../types/auth.oauth.types';
+import { JwtPayload } from '../../../types/auth.jwt.types';
 
 @Injectable()
 export class GoogleAuthService {
@@ -11,12 +12,20 @@ export class GoogleAuthService {
         private jwtService: JwtService,
     ) {}
 
-    async oAuthLogin(user: oAuthUserObject) {
+    async OAuthLogin(user: OAuthUserObject) {
         // Find or create a user based on the Google ID
         const dbUser = await this.usersService.findOrCreate(user);
 
         // Generate a JWT token for the user
-        const payload = { username: dbUser.email, name: dbUser.name };
+        const payload:JwtPayload = {
+            email: dbUser.email,
+            firstName: dbUser.firstName,
+            lastName: dbUser.lastName,
+        }
+
+        // TODO JWT generation should be done outside of GoogleAuthService
+        // JWT logic should be handled on the route endpoint itself
+
         return {
             jwt: this.jwtService.sign(payload),
         };
