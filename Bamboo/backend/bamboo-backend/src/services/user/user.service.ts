@@ -51,7 +51,7 @@ export class UserService {
   
   }
 
-  async initialiseAccount(accountType: string, jwt: JwtPayload){
+  async initialiseAccount(jwt: JwtPayload){
     // change initialise to true
     await this.prismaService.prisma.user.update(
       {
@@ -63,28 +63,5 @@ export class UserService {
         }
       }
     )
-
-    let account = null
-    if (accountType === 'student') {
-      account = await this.prismaService.prisma.student.create({
-        data: {
-          name: `${jwt.firstName} ${jwt.lastName}`,
-          email: jwt.email,
-          password: '',
-        }
-      })
-    }
-
-    if (accountType === 'tutor') {
-      account = await this.prismaService.prisma.tutor.create({
-        data: {
-          name: `${jwt.firstName} ${jwt.lastName}`,
-          email: jwt.email,
-          password: '',
-        }
-      })
-    }
-
-    return account
   }
 }
