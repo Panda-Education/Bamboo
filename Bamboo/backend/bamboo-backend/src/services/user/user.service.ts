@@ -6,6 +6,7 @@ import { PasswordService } from '../password/password.service';
 
 import { OAuthUserObject } from '../../types/auth.oauth.types';
 import { User } from '@prisma/client';
+import { JwtPayload } from 'src/types/auth.jwt.types';
 
 @Injectable()
 export class UserService {
@@ -48,5 +49,42 @@ export class UserService {
 
     return existingUser
   
+  }
+
+  async initialiseAccount(accountType: string, jwt: JwtPayload){
+    // change initialise to true
+    await this.prismaService.prisma.user.update(
+      {
+        where: {
+          email: jwt.email
+        },
+        data:{
+          initialised: true
+        }
+      }
+    )
+
+    let account = null
+    if (accountType === 'student') {
+      account = await this.prismaService.prisma.student.create({
+        data: {
+          name: `${jwt.firstName} ${jwt.lastName}`,
+          email: jwt.email,
+          password: '',
+        }
+      })
+    }
+
+    if (accountType === 'tutor') {
+      account = await this.prismaService.prisma.tutor.create({
+        data: {
+          name: `${jwt.firstName} ${jwt.lastName}`,
+          email: jwt.email,
+          password: '',
+        }
+      })
+    }
+
+    return account
   }
 }

@@ -12,6 +12,7 @@ import { configDotenv } from 'dotenv';
 import { PasswordService } from './services/password/password.service';
 import * as process from 'node:process';
 import { GoogleModule } from './routes/auth/google/google.module';
+import { InitialiseModule } from './routes/auth/initialise/initialise.module';
 
 //// Load environment variables
 configDotenv({
@@ -23,6 +24,8 @@ configDotenv({
     NestjsFormDataModule,
     AuthModule,
     RegisterModule,
+    InitialiseModule,
+    GoogleModule,
     RouterModule.register([
       {
         path: 'auth',
@@ -35,6 +38,10 @@ configDotenv({
           {
             path: 'google',
             module: GoogleModule 
+          },
+          {
+            path: 'initialise',
+            module: InitialiseModule
           }
         ],
       },

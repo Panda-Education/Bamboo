@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 
 
 export const JWT_HEADER_NAME = "PANDA_BAMBOO_JWT"
