@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@/utils"
+import { cn } from "@/components/utils"
 import { useFormField } from '@/components/shadcn/ui/form';
 
 export interface InputProps
