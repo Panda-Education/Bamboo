@@ -47,6 +47,7 @@ export class RegisterController {
     })
 
     res.cookie("jwt", jwt, {httpOnly: false, path: '/'})
+    res.header("Authorization", `Bearer ${jwt}`)
     
   }
 
