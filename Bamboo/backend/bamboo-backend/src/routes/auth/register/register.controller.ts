@@ -7,8 +7,8 @@ import {
   RegisterUserFromEmailPassword,
 } from '../../../dto/auth/register-user-from-email-password/register-user-from-email-password';
 import { Response } from 'express';
-import { PandaJwtService } from '../../../auth/panda-jwt/panda-jwt.service';
 import { UserAccountTypes } from '../../../types/user.account.types';
+import { PandaJwtService } from '../../../auth/panda-jwt/panda-jwt.service';
 
 @Controller('')
 export class RegisterController {
