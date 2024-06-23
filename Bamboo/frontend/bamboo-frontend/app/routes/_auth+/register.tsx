@@ -10,8 +10,8 @@ import { Button } from '@/components/shadcn/ui/button';
 import { Link, useLoaderData } from '@remix-run/react';
 import React, { useState } from 'react';
 import TextHorizontalDivider from '@/components/text-horizontal-divider';
-import { RegisterUserEmailPassword } from '~/services/auth/register_email_password';
-import { RegisterGoogle } from '~/services/auth/register_google';
+import { RegisterUserEmailPassword } from '~/services/auth/register/register_email_password';
+import { RegisterGoogle } from '~/services/auth/register/register_google';
 import { useServices } from '~/services/provider';
 import * as process from 'node:process';
 

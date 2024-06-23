@@ -14,6 +14,8 @@ async function bootstrap() {
     origin: [
       'http://localhost:5173'
     ],
+    allowedHeaders: ['Authorization', 'Content-Type', 'Access-Control-Allow-Headers'],
+    exposedHeaders: ['Authorization'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   })

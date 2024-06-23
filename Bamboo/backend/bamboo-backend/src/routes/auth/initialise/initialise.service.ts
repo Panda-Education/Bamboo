@@ -39,8 +39,8 @@ export class InitialiseService {
         const accountPayload:JwtPayload = {
             id: account.id,
             email: account.email,
-            firstName: account.firstName,
-            lastName: account.lastName,
+            firstName: jwt.firstName,
+            lastName: jwt.lastName,
             userType: accountType,
         }
 
