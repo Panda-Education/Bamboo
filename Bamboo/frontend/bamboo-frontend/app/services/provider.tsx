@@ -1,7 +1,9 @@
 import { createContext, useContext } from 'react';
-import { RegisterUserEmailPassword } from '~/services/auth/register_email_password';
-import { RegisterGoogle } from '~/services/auth/register_google';
+import { RegisterUserEmailPassword } from '~/services/auth/register/register_email_password';
+import { RegisterGoogle } from '~/services/auth/register/register_google';
 import { InitialiseAccountType } from './initialise/initialise_account_type';
+import { DecodeJwt } from '~/services/auth/jwt/decode-jwt';
+import { DeserialiseJwtJson } from '~/services/auth/jwt/deserialise-jwt-json';
 
 
 const services = {
@@ -10,9 +12,18 @@ const services = {
       emailAndPassword: RegisterUserEmailPassword,
       google: RegisterGoogle
     },
-    initilaise: {
-      accountType: InitialiseAccountType
+    jwt: {
+      deserialise: DeserialiseJwtJson,
+      decode: DecodeJwt,
+    },
+    state: {
+
     }
+  },
+  account: {
+    initialise: {
+      accountType: InitialiseAccountType
+    },
   }
 }
 

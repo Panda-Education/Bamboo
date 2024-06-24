@@ -9,6 +9,9 @@ import { LoaderFunction } from '@remix-run/node';
 import { parse } from 'cookie';
 import jwt from 'jsonwebtoken';
 import { useServices } from '~/services/provider';
+import { useAtom } from 'jotai';
+import { JwtAtomSerialised } from '@/jotai/atoms/jwt-atom-serialised';
+import { toast } from 'sonner';
 
 // //Loader function for cookies
 export const loader: LoaderFunction = async ({request}) => {
@@ -31,8 +34,12 @@ export default function SetupWelcomePage(){
     BACKEND: string
   }>()
 
-  const { auth } = useServices()
+  const { account } = useServices()
   const [selectState, setSelectState] = useState<string>("")
+
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const [_, setUserJwt] = useAtom(JwtAtomSerialised)
 
   const options:SelectChunkyOptionType[] = [
     {
@@ -52,13 +59,25 @@ export default function SetupWelcomePage(){
   }
 
   const handleButtonClick = () => {
-    if(selectState){
-      console.log(`SUBMIT RESPONSE HERE!, ${selectState}`)
-      auth.initilaise.accountType(
+    if(selectState && !loading){
+      setLoading(true)
+      account.initialise.accountType(
         BACKEND,
         selectState,
         jwt
       )
+        .then(j => {
+          setUserJwt(JSON.stringify(j))
+          setLoading(false)
+          console.log(j)
+          toast(`Hello, ${j.firstName}!`)
+        })
+        .catch((e)=>{
+          console.error(e)
+          toast.error('Oops! Something went wrong!', {
+            description: "Something went wrong while trying to set up your account."
+          })
+        })
     }
   }
 
@@ -67,7 +86,7 @@ export default function SetupWelcomePage(){
       <div className={`flex flex-col justify-start items-stretch gap-y-6 md:w-[45ch] max-w-full`}>
         <CardHeader title={"Set up your account"} subtitle={"Choose your account type to get started"} />
         <SelectChunky options={options} callback={callback} active={selectState} />
-        <Button type={"submit"} variant={"default"} onClick={handleButtonClick}>
+        <Button type={"submit"} variant={"default"} loading={loading} onClick={handleButtonClick}>
           Next
         </Button>
       </div>

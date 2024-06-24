@@ -46,7 +46,7 @@ export class RegisterController {
       userType: UserAccountTypes.Uninitialised
     })
 
-    res.cookie("jwt", jwt, {httpOnly: false, path: '/'})
+    res.cookie("jwt", jwt, {httpOnly: true, path: '/'})
     res.header("Authorization", `Bearer ${jwt}`)
     
   }

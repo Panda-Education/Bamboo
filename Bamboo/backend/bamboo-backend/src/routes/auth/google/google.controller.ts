@@ -17,7 +17,7 @@ export class GoogleController {
             const { jwt } = await this.authService.OAuthLogin(req.user);
             console.log(jwt)
             // Set the JWT token as a cookie
-            res.cookie('jwt', jwt, { httpOnly: false, path: '/' });
+            res.cookie('jwt', jwt, { httpOnly: true, path: '/' });
             res.redirect(`http://localhost:5173/welcome?token=${jwt}`)
         } catch (err) {
         res.status(500).send({ success: false, message: err.message });
