@@ -23,9 +23,6 @@ export async function RegisterUserEmailPassword(
     const res = await axios.post(`${endpoint}/auth/register`, form)
 
     console.log(res)
-
-    toast.success(`Hello, ${firstName}!`)
-
   } catch (e) {
     toast.error("Oops! Something went wrong.", {
     })
