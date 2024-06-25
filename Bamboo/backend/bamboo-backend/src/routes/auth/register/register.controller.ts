@@ -20,6 +20,7 @@ export class RegisterController {
    * Endpoint for receiving Email and Password combinations
    * @param body
    * @param res
+   * @param req
    */
   @Post()
   @UseInterceptors(FormDataInterceptor)
