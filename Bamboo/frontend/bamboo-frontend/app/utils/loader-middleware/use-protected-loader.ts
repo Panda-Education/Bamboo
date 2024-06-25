@@ -9,13 +9,11 @@ export function UseProtectedLoader<T>(
 ) {
   return (p: LoaderFunctionArgs) => {
 
-    try {
-      Protected(p.request, ...roles);
-      return fn(p);
-    } catch (e) {
-      console.warn(e);
-      return RedirectGlobalHome;
+    if(!Protected(p.request, ...roles)){
+      return RedirectGlobalHome
     }
 
-  };
+    return fn(p)
+
+  }
 }

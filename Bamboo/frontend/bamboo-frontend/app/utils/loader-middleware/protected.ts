@@ -3,13 +3,17 @@ import { JwtPayload, UserAccountTypes } from '~/types/auth/jwt.types';
 import { DecodeJwt } from '~/services/auth/jwt/decode-jwt';
 
 
-export function Protected(req:Request, ...roles:UserAccountTypes[]){
+export function Protected(req:Request, ...roles:UserAccountTypes[]):boolean{
   const jwtString:string|null = GetCookieValue(req.headers.get('cookie') || "", "jwt")
 
-  if(!jwtString || jwtString===''){throw "JWT string not found in cookie!"}
+  if(!jwtString || jwtString===''){
+    return false
+  }
 
   const jwt:JwtPayload = DecodeJwt(jwtString)
 
-  if(!roles.includes(jwt.userType)){throw "User not permitted!"}
+  return roles.includes(jwt.userType)
+
+
 
 }
