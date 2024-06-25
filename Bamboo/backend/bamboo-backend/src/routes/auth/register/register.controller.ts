@@ -34,9 +34,10 @@ export class RegisterController {
 
       console.log(res.getHeaders())
       
-      res.cookie('jwt', userJwt, { httpOnly: true, path: '/' })
-      res.setHeader('authorization', `Bearer ${userJwt}`)
-      res.redirect(`http://localhost:5173/welcome?token=${userJwt}`)
+      res.status(200)
+      .cookie('jwt', userJwt, { httpOnly: true, path: '/' })
+      .setHeader('authorization', `Bearer ${userJwt}`)
+      .send()
     } catch (e) {
       res.status(500).send({success: false, message: e.message})
     }

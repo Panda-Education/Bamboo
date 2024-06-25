@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 import axios from 'axios';
-
+import { DecodeJwt } from '../jwt/decode-jwt';
 
 export async function RegisterUserEmailPassword(
   endpoint:string,
@@ -23,6 +23,8 @@ export async function RegisterUserEmailPassword(
     const res = await axios.post(`${endpoint}/auth/register`, form)
 
     console.log(res)
+
+    return DecodeJwt(res.headers['authorization'])
   } catch (e) {
     toast.error("Oops! Something went wrong.", {
     })

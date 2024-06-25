@@ -61,6 +61,7 @@ export default function SetupWelcomePage(){
   const handleButtonClick = () => {
     if(selectState && !loading){
       setLoading(true)
+      console.log(jwt)
       account.initialise.accountType(
         BACKEND,
         selectState,
