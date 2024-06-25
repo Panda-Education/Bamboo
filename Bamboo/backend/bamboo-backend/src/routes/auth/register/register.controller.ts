@@ -1,22 +1,18 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Body, Controller, Post, Res, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UseInterceptors } from '@nestjs/common';
 import { FormDataInterceptor } from 'nestjs-form-data/dist/interceptors/FormData.interceptor';
-import { UserService } from '../../../services/user/user.service';
 import {
   RegisterUserFromEmailPassword,
 } from '../../../dto/auth/register-user-from-email-password/register-user-from-email-password';
 import { Response } from 'express';
-import { UserAccountTypes } from '../../../types/user.account.types';
-import { PandaJwtService } from '../../../auth/panda-jwt/panda-jwt.service';
-import { JwtPayload } from 'src/types/auth.jwt.types';
+import { RegisterService } from './register.service';
 
 @Controller('')
 export class RegisterController {
 
   constructor(
-    private userService:UserService,
-    private pandaJwtService: PandaJwtService
+    private registerService: RegisterService,
   ) {
   }
 
@@ -29,29 +25,17 @@ export class RegisterController {
   @UseInterceptors(FormDataInterceptor)
   async emailAndPassword(
     @Body() body: RegisterUserFromEmailPassword,
-    @Res() res: Response
+    @Res() res: Response,
+    @Req() req: Request
   ){
     try{
-      const user = await this.userService.createUser(
-        body.firstName,
-        body.lastName,
-        body.email,
-        body.password
-      )
+      const { userJwt } = await this.registerService.registerUser(body);
 
-      // Generate a JWT token for the user
-      const payload: JwtPayload = {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        userType: UserAccountTypes.Uninitialised
-      }
+      console.log(res.getHeaders())
       
-      const jwt = await this.pandaJwtService.sign(payload)
-      
-      res.cookie('jwt', jwt, { httpOnly: true, path: '/' });
-      res.redirect(`http://localhost:5173/welcome?token=${jwt}`)
+      res.cookie('jwt', userJwt, { httpOnly: true, path: '/' })
+      res.setHeader('authorization', `Bearer ${userJwt}`)
+      res.redirect(`http://localhost:5173/welcome?token=${userJwt}`)
     } catch (e) {
       res.status(500).send({success: false, message: e.message})
     }
