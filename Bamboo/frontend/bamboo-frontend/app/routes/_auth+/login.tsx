@@ -18,6 +18,10 @@ import { Input } from '@/components/shadcn/ui/input';
 import { Link, useLoaderData } from '@remix-run/react';
 import * as process from 'node:process';
 import { useServices } from '~/services/provider';
+import { set } from 'date-fns';
+import { useAtom } from 'jotai';
+import { JwtAtomSerialised } from '@/jotai/atoms/jwt-atom-serialised';
+import { toast } from 'sonner';
 
 export const meta: MetaFunction = () => {
   return [
@@ -53,6 +57,7 @@ export default function LoginRoute(){
   const { auth } = useServices()
   const [loading, setLoading] = useState<boolean>(false)
 
+  const [_, setUserJwt] = useAtom(JwtAtomSerialised)
   const loginFormSchema = z.object({
     email: z.string(),
     password: z.string()
@@ -76,8 +81,16 @@ export default function LoginRoute(){
         BACKEND,
         data.email,
         data.password
-      ).then(() =>{
+      ).then(j =>{
+        setUserJwt(JSON.stringify(j))
         setLoading(false);
+        console.log(j)
+      })
+      .catch((e) => {
+        console.error(e)
+        toast.error('Oops! Something went wrong!', {
+          description: "Something went wrong while trying to set up your account."
+        })
       })
     }
   }

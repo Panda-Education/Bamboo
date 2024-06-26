@@ -7,7 +7,6 @@ import { json, useLoaderData } from '@remix-run/react';
 import { Button } from '@/components/shadcn/ui/button';
 import { LoaderFunction } from '@remix-run/node';
 import { parse } from 'cookie';
-import jwt from 'jsonwebtoken';
 import { useServices } from '~/services/provider';
 import { useAtom } from 'jotai';
 import { JwtAtomSerialised } from '@/jotai/atoms/jwt-atom-serialised';

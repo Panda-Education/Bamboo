@@ -30,6 +30,7 @@ export class LoginController {
                 body.email,
                 body.password
             )
+            console.log(user)
 
             let account = await this.studentService.getStudent(user.email)
             let accountType = UserAccountTypes.Student

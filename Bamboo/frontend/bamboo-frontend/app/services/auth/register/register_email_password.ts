@@ -20,14 +20,14 @@ export async function RegisterUserEmailPassword(
     form.append("email", email)
     form.append("password", password)
 
-    const res = await axios.post(`${endpoint}/auth/register`, form)
+    const res = await axios.post(`${endpoint}/auth/register`, form, {withCredentials: true})
 
     console.log(res)
 
     return DecodeJwt(res.headers['authorization'])
   } catch (e) {
-    toast.error("Oops! Something went wrong.", {
-    })
+    toast.error("Oops! Something went wrong.")
+    console.log(e)
   }
 
 }

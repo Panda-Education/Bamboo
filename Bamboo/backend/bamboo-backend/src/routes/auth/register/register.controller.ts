@@ -32,12 +32,14 @@ export class RegisterController {
     try{
       const { userJwt } = await this.registerService.registerUser(body);
 
+      console.log(userJwt)
       console.log(res.getHeaders())
       
       res.status(200)
       .cookie('jwt', userJwt, { httpOnly: true, path: '/' })
       .setHeader('authorization', `Bearer ${userJwt}`)
       .send()
+      
     } catch (e) {
       res.status(500).send({success: false, message: e.message})
     }
