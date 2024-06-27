@@ -37,24 +37,16 @@ export class UserService {
 
   }
 
-  async findOrCreate(user: OAuthUserObject): Promise<{user: User, loggingIn: boolean}> {
-    let loggingIn:boolean;
+  async findOrCreate(user: OAuthUserObject): Promise<User> {
     const existingUser = await this.prismaService.prisma.user.findUnique({
       where: {
         email: user.email,
       },
     });
-  
-    if (!existingUser) {
-      loggingIn = false;
-      const newUser = await this.createUser(user.firstName, user.lastName, user.email, undefined)
-      return { user: newUser, loggingIn };
-    } else {
-      loggingIn = true;
+    if (!existingUser){
+      return await this.createUser(user.firstName, user.lastName, user.email, undefined)
     }
-
-    return { user: existingUser, loggingIn };
-  
+    return existingUser
   }
 
   async initialiseAccount(jwt: JwtPayload){

@@ -13,10 +13,12 @@ import { GoogleStrategy } from '../../../dto/auth/strategies/google-oauth.strate
 import { UserService } from '../../../services/user/user.service';
 import { DbPrismaService } from '../../../services/db/db-prisma/db-prisma.service';
 import { PasswordService } from '../../../services/password/password.service';
+import { StudentService } from 'src/services/student/student.service';
+import { TutorService } from 'src/services/tutor/tutor.service';
 
 @Module({
     controllers: [GoogleController],
     imports: [],
-    providers: [GoogleAuthService, JwtGuardStrategy, JwtGuard, GoogleStrategy,UserService, DbPrismaService, PasswordService],
+    providers: [GoogleAuthService, JwtGuardStrategy, JwtGuard, GoogleStrategy,UserService, DbPrismaService, PasswordService, StudentService, TutorService],
     })
 export class GoogleModule { }
