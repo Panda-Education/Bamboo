@@ -20,7 +20,4 @@ export async function InitialiseAccountType(
 
     return DecodeJwt(res.headers['authorization'])
 
-
-
-
 }

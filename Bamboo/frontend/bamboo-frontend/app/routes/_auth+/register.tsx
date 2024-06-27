@@ -13,6 +13,8 @@ import TextHorizontalDivider from '@/components/text-horizontal-divider';
 import { RegisterUserEmailPassword } from '~/services/auth/register/register_email_password';
 import { RegisterGoogle } from '~/services/auth/register/register_google';
 import { useServices } from '~/services/provider';
+import { useAtom } from 'jotai';
+import { JwtAtomSerialised } from '@/jotai/atoms/jwt-atom-serialised';
 import * as process from 'node:process';
 
 
@@ -51,6 +53,8 @@ export default function RegisterRoute(){
 
   const { auth } = useServices()
   const [loading, setLoading] = useState<boolean>(false)
+
+  const [_, setUserJwt] = useAtom(JwtAtomSerialised)
 
   const nameRegex = /^[a-zA-Z\s]+$/
 
@@ -109,7 +113,14 @@ export default function RegisterRoute(){
         BACKEND,
         data.firstName, data.lastName,
         data.email, data.password
-      ).then(()=>{setLoading(false)})
+      ).then(j => {
+        setUserJwt(JSON.stringify(j))
+        setLoading(false)
+        console.log(j)
+      })
+      .catch((e) => {
+        console.error(e)
+      })
     }
   }
 

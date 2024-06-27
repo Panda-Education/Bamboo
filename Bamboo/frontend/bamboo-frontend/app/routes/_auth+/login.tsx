@@ -13,10 +13,15 @@ import {
 } from '@/components/shadcn/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from '@/components/shadcn/ui/input';
-import { Link } from '@remix-run/react';
-
+import { Link, useLoaderData } from '@remix-run/react';
+import * as process from 'node:process';
+import { useServices } from '~/services/provider';
+import { set } from 'date-fns';
+import { useAtom } from 'jotai';
+import { JwtAtomSerialised } from '@/jotai/atoms/jwt-atom-serialised';
+import { toast } from 'sonner';
 
 export const meta: MetaFunction = () => {
   return [
@@ -34,8 +39,25 @@ export const meta: MetaFunction = () => {
   ]
 }
 
+export async function loader() {
+
+  const BACKEND:string = process.env.BACKEND || ""
+
+  return {
+    BACKEND
+  }
+}
+
 export default function LoginRoute(){
 
+  const {BACKEND} = useLoaderData<{
+    BACKEND:string
+  }>()
+
+  const { auth } = useServices()
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const [_, setUserJwt] = useAtom(JwtAtomSerialised)
   const loginFormSchema = z.object({
     email: z.string(),
     password: z.string()
@@ -52,7 +74,34 @@ export default function LoginRoute(){
   })
 
   const submitForm = (data:LoginFormType) => {
-    console.log(data)
+    if (!loading){
+      console.log(data)
+      setLoading(true)
+      auth.login.emailAndPassword(
+        BACKEND,
+        data.email,
+        data.password
+      ).then(j =>{
+        setUserJwt(JSON.stringify(j))
+        setLoading(false);
+        console.log(j)
+      })
+      .catch((e) => {
+        console.error(e)
+        toast.error('Oops! Something went wrong!', {
+          description: "Something went wrong while trying to set up your account."
+        })
+      })
+    }
+  }
+
+  const submitGoogleForm = () => {
+    if (!loading){
+      setLoading(true)
+      auth.login.google(BACKEND).then(() =>{
+        setLoading(false);
+      })
+    }
   }
 
   return(
@@ -88,8 +137,8 @@ export default function LoginRoute(){
               )}
             />
             <div className={`flex flex-col justify-start items-stretch mt-4 gap-y-2 col-span-2`}>
-              <Button type={'submit'} variant={'default'} className={``}>Login</Button>
-              <Button type={'button'} variant={'outline'}>Login with Google</Button>
+              <Button loading={loading} type={'submit'} variant={'default'} className={``}>Login</Button>
+              <Button type={'button'} variant={'outline'} onClick={submitGoogleForm}>Login with Google</Button>
             </div>
           </form>
         </Form>

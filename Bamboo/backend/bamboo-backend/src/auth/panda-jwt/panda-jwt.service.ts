@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload, JwtString } from '../../types/auth.jwt.types';
@@ -18,7 +19,5 @@ export class PandaJwtService {
   async validate(token:string):Promise<JwtPayload> {
     return this.jwtService.verifyAsync<JwtPayload>(token)
   }
-
-
 
 }
