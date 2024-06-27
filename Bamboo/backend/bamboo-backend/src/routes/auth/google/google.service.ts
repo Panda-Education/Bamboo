@@ -16,7 +16,7 @@ export class GoogleAuthService {
 
     async OAuthLogin(user: OAuthUserObject) {
         // Find or create a user based on the Google ID
-        const dbUser = await this.usersService.findOrCreate(user);
+        const { user: dbUser, loggingIn } = await this.usersService.findOrCreate(user);
 
         // Generate a JWT token for the user
         const payload:JwtPayload = {
@@ -29,6 +29,7 @@ export class GoogleAuthService {
 
         return {
             jwt: await this.pandaJwtService.sign(payload),
+            loggingIn
         };
     }
 }
