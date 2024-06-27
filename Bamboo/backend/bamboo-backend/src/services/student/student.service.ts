@@ -19,4 +19,12 @@ export class StudentService {
             }
         });
     }
+
+    async getStudent(email: string): Promise<Student> {
+        return this.prismaService.prisma.student.findUnique({
+            where: {
+                email: email
+            }
+        });
+    }
 }

@@ -36,9 +36,9 @@ export class InitialiseController {
             )
 
             res.status(200)
-              .cookie('jwt', accountJwt, { httpOnly: true, path: '/' })
-              .setHeader('authorization', `Bearer ${accountJwt}`)
-              .send()
+            .cookie('jwt', accountJwt, { httpOnly: true, path: '/' })
+            .setHeader('authorization', `Bearer ${accountJwt}`)
+            .send()
         } catch (err) {
             res.status(500).send({ success: false, message: err.message });
         }
