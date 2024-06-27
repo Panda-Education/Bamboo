@@ -25,7 +25,9 @@ export class PasswordService {
    * @return {boolean} -- True => password matches; False => passwords do not match
    */
   async validatePassword(password_hash:string, password_input:string):Promise<boolean> {
-    return this.bc.compare(password_hash, password_input)
+    /* password_input should be first as bc.compare first argument is the data which is a string or buffer 
+    and the second argument is the encrypted string*/
+    return this.bc.compare(password_input, password_hash)
   }
 
 

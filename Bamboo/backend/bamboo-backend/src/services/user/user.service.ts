@@ -65,4 +65,22 @@ export class UserService {
       }
     )
   }
+
+  async getUser(email: string, password: string): Promise<User> {
+    const user = await this.prismaService.prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    })
+
+    if (!user) {
+      throw new Error("User not found")
+    }
+
+    if (!await this.passwordService.validatePassword(user.password, password)) {
+      throw new Error("Password does not match")
+    }
+
+    return user
+  }
 }
