@@ -16,6 +16,7 @@ import { InitialiseModule } from './routes/auth/initialise/initialise.module';
 import { PandaJwtService } from './auth/panda-jwt/panda-jwt.service';
 import { PandaJwtModule } from './auth/panda-jwt/panda-jwt.module';
 import { RolesGuardModule } from './auth/roles-guard/roles-guard.module';
+import { VerifyModule } from './routes/auth/verify/verify.module';
 
 //// Load environment variables
 configDotenv({
@@ -40,6 +41,10 @@ configDotenv({
           {
             path: 'initialise',
             module: InitialiseModule
+          },
+          {
+            path: 'verify',
+            module: VerifyModule
           }
         ],
       },
@@ -48,6 +53,7 @@ configDotenv({
     RegisterModule,
     InitialiseModule,
     GoogleModule,
+    VerifyModule,
     PandaJwtModule,
     RolesGuardModule,
   ],

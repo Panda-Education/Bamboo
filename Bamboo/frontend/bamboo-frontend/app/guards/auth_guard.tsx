@@ -5,6 +5,7 @@ import { JwtAtomSerialised } from '@/jotai/atoms/jwt-atom-serialised';
 import { useAtom } from 'jotai';
 import { JwtPayload, UserAccountTypes } from '~/types/auth/jwt.types';
 import UrlScopeRestriction from '~/utils/url-scope-restriction';
+import axios from 'axios';
 
 
 export default function AuthGuard(
@@ -102,27 +103,19 @@ export default function AuthGuard(
           ()=>{nav('/login')})
       }
 
-      // User has JWT
-      if(jwtString && jwtString!==''){
-        const jwtPayload:JwtPayload = jwt.deserialise(jwtString)
+      if(jwtString){
 
-        switch (jwtPayload.userType){
-          case UserAccountTypes.Student:
-            nav('/student')
-            break
-          case UserAccountTypes.Tutor:
-            nav('/tutor')
-            break
-          case UserAccountTypes.Uninitialised:
-            nav('/welcome')
-            break
-          default:
-            console.log(jwtPayload)
-            nav('/login')
-            break
-        }
+        (async ()=>{
+
+          await axios.get('http://localhost:3000/auth/verify', {
+            withCredentials: true,
+          })
+
+        })()
 
       }
+
+
     } catch (e) {
       console.error(e)
     }
