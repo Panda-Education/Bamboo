@@ -16,6 +16,7 @@ import { InitialiseModule } from './routes/auth/initialise/initialise.module';
 import { PandaJwtService } from './auth/panda-jwt/panda-jwt.service';
 import { PandaJwtModule } from './auth/panda-jwt/panda-jwt.module';
 import { LoginModule } from './routes/auth/login/login.module';
+import { RolesGuardModule } from './auth/roles-guard/roles-guard.module';
 
 //// Load environment variables
 configDotenv({
@@ -24,11 +25,6 @@ configDotenv({
 
 @Module({
   imports: [
-    NestjsFormDataModule,
-    RegisterModule,
-    InitialiseModule,
-    GoogleModule,
-    LoginModule,
     RouterModule.register([
       {
         path: 'auth',
@@ -40,7 +36,7 @@ configDotenv({
           },
           {
             path: 'google',
-            module: GoogleModule 
+            module: GoogleModule
           },
           {
             path: 'initialise',
@@ -53,7 +49,12 @@ configDotenv({
         ],
       },
     ]),
+    NestjsFormDataModule,
+    RegisterModule,
+    InitialiseModule,
+    GoogleModule,
     PandaJwtModule,
+    RolesGuardModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService, DbPrismaService, PasswordService],

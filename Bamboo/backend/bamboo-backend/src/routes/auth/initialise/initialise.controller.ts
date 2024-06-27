@@ -1,11 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Post, Body, UseInterceptors, Res, Req } from '@nestjs/common';
-import { FormDataInterceptor } from "nestjs-form-data/dist/interceptors/FormData.interceptor";
-import { JwtPayload } from "src/types/auth.jwt.types";
-import { InitialiseService } from "./initialise.service";
+import { Body, Controller, Post, Req, Res, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FormDataInterceptor } from 'nestjs-form-data/dist/interceptors/FormData.interceptor';
+import { JwtPayload } from 'src/types/auth.jwt.types';
+import { InitialiseService } from './initialise.service';
 import { TodoAny } from '../../../types/_todo.types';
 import { Request, Response } from 'express';
 import { PandaJwtService } from '../../../auth/panda-jwt/panda-jwt.service';
+import { Roles } from '../../../auth/roles-guard/roles.decorator';
+import { UserAccountTypes } from '../../../types/user.account.types';
+import { RolesGuard } from '../../../auth/roles-guard/roles-guard.service';
 
 @Controller('')
 export class InitialiseController {
@@ -16,6 +19,8 @@ export class InitialiseController {
     }
 
     @Post()
+    @Roles(UserAccountTypes.Uninitialised)
+    @UseGuards(RolesGuard)
     @UseInterceptors(FormDataInterceptor)
     async initialiseAccountType(
         @Body() body: TodoAny,
@@ -25,16 +30,10 @@ export class InitialiseController {
         const decoded: JwtPayload = await this.pandaJwtService.validate(body.jwt)
         try {
 
-            // console.log(body)
-            // console.log(req.headers)
-            
             const { accountJwt } = await this.initialiseService.initialiseAccount(
                 body.accountType.toUpperCase(),
                 decoded
             )
-
-
-            console.log(res.getHeaders())
 
             res.status(200)
             .cookie('jwt', accountJwt, { httpOnly: true, path: '/' })
