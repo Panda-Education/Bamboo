@@ -37,7 +37,8 @@ export class UserService {
 
   }
 
-  async findOrCreate(user: OAuthUserObject): Promise<User> {
+  async findOrCreate(user: OAuthUserObject): Promise<{user: User, loggingIn: boolean}> {
+    let loggingIn:boolean;
     const existingUser = await this.prismaService.prisma.user.findUnique({
       where: {
         email: user.email,
@@ -45,10 +46,14 @@ export class UserService {
     });
   
     if (!existingUser) {
-      return this.createUser(user.firstName, user.lastName, user.email, undefined)
+      loggingIn = false;
+      const newUser = await this.createUser(user.firstName, user.lastName, user.email, undefined)
+      return { user: newUser, loggingIn };
+    } else {
+      loggingIn = true;
     }
 
-    return existingUser
+    return { user: existingUser, loggingIn };
   
   }
 

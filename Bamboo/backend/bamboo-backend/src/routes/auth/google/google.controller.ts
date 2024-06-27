@@ -14,11 +14,18 @@ export class GoogleController {
     @UseGuards(GoogleOauthGuard)
     async googleAuthCallback(@Req() req: TodoAny, @Res() res: Response) {
         try {
-            const { jwt } = await this.authService.OAuthLogin(req.user);
-            console.log(jwt)
+            const { jwt, loggingIn } = await this.authService.OAuthLogin(req.user);
+            console.log(jwt, loggingIn)
             // Set the JWT token as a cookie
-            res.cookie('jwt', jwt, { httpOnly: true, path: '/' });
-            res.redirect(`http://localhost:5173/welcome?token=${jwt}`)
+            if (!loggingIn) {
+                res.cookie('jwt', jwt, { httpOnly: true, path: '/' });
+                res.redirect(`http://localhost:5173/welcome?token=${jwt}`)
+            } else {
+                res.status(200)
+                .cookie('jwt', jwt, { httpOnly: true, path: '/' })
+                .header('authorization', `Bearer ${jwt}`)
+                .send()
+            }
         } catch (err) {
         res.status(500).send({ success: false, message: err.message });
         }
