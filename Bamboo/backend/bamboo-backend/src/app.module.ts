@@ -52,6 +52,7 @@ configDotenv({
     NestjsFormDataModule,
     RegisterModule,
     InitialiseModule,
+    LoginModule,
     GoogleModule,
     PandaJwtModule,
     RolesGuardModule,

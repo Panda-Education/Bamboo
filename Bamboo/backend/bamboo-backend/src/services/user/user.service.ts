@@ -43,13 +43,10 @@ export class UserService {
         email: user.email,
       },
     });
-  
-    if (!existingUser) {
-      return this.createUser(user.firstName, user.lastName, user.email, undefined)
+    if (!existingUser){
+      return await this.createUser(user.firstName, user.lastName, user.email, undefined)
     }
-
     return existingUser
-  
   }
 
   async initialiseAccount(jwt: JwtPayload){
