@@ -1,9 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from "@nestjs/common";
+import { Global, Injectable } from '@nestjs/common';
 import { DbPrismaService } from "../db/db-prisma/db-prisma.service";
 import { JwtPayload } from "../../types/auth.jwt.types";
 import { Tutor } from "@prisma/client";
 
+@Global()
 @Injectable()
 export class TutorService {
     constructor(

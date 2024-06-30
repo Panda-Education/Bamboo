@@ -17,6 +17,10 @@ import { PandaJwtService } from './auth/panda-jwt/panda-jwt.service';
 import { PandaJwtModule } from './auth/panda-jwt/panda-jwt.module';
 import { LoginModule } from './routes/auth/login/login.module';
 import { RolesGuardModule } from './auth/roles-guard/roles-guard.module';
+import { CoursesModule } from './routes/courses/courses.module';
+import { CourseService } from './services/course/course.service';
+import { TutorService } from './services/tutor/tutor.service';
+import { StudentService } from './services/student/student.service';
 
 //// Load environment variables
 configDotenv({
@@ -48,6 +52,10 @@ configDotenv({
           }
         ],
       },
+      {
+        path: 'courses',
+        module: CoursesModule
+      }
     ]),
     NestjsFormDataModule,
     RegisterModule,
@@ -56,8 +64,26 @@ configDotenv({
     GoogleModule,
     PandaJwtModule,
     RolesGuardModule,
+    CoursesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService, DbPrismaService, PasswordService],
+  providers: [
+    AppService,
+    UserService,
+    DbPrismaService,
+    PasswordService,
+    CourseService,
+    TutorService,
+    StudentService
+  ],
+  exports: [
+    AppService,
+    UserService,
+    DbPrismaService,
+    PasswordService,
+    CourseService,
+    TutorService,
+    StudentService
+  ],
 })
 export class AppModule {}

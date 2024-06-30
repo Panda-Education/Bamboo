@@ -31,9 +31,10 @@ model StudentGroup {
 }
 
 model Course {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   title       String
-  description String? @default("")
+  description String?  @default("")
+  isDraft     Boolean? @default(false)
 
   tutors      Tutor[] @relation("TutorCourses")
   adminId     String
