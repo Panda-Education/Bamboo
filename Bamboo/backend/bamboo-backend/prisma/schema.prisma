@@ -68,19 +68,25 @@ model StudentGroup {
 }
 
 model Course {
-  id            String          @id @unique
-  title         String
-  createdOn     DateTime        @default(now())
-  updatedOn     DateTime        @default(now())
-  tutors        Tutor[]         @relation("TutorCourses")
-  AdminId       String
-  courseAdmin   Tutor           @relation("AdminCourses", fields: [AdminId], references: [id])
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @default("")
+  isDraft     Boolean? @default(false)
+
+  tutors      Tutor[] @relation("TutorCourses")
+  adminId     String
+  courseAdmin Tutor   @relation("AdminCourses", fields: [adminId], references: [id])
+
   students      Student[]
   studentGroups StudentGroup[]
+
   announcements Announcements[]
-  description   Description[]
+  details       Details[]
   topics        Topic[]
   assignments   Assignment[]
+
+  createdOn DateTime @default(now())
+  updatedOn DateTime @default(now())
 }
 
 model Announcements {
@@ -92,7 +98,7 @@ model Announcements {
   course           Course   @relation(fields: [courseId], references: [id])
 }
 
-model Description {
+model Details {
   id             String @id @default(cuid())
   summary        String
   subjectDetails String

@@ -10,6 +10,8 @@ export default function UrlScopeRestriction(
   callback:()=>void
 ){
 
+  console.log(currentPath)
+
   if(allowedScopes.filter(a => currentPath.startsWith(a)).length<=0){
     callback()
   }

@@ -6,6 +6,7 @@ import { LoginGoogle } from './auth/login/login_google';
 import { InitialiseAccountType } from './initialise/initialise_account_type';
 import { DecodeJwt } from '~/services/auth/jwt/decode-jwt';
 import { DeserialiseJwtJson } from '~/services/auth/jwt/deserialise-jwt-json';
+import { CreateCourse } from '~/services/courses/create-course';
 
 
 const services = {
@@ -30,6 +31,9 @@ const services = {
     initialise: {
       accountType: InitialiseAccountType
     },
+  },
+  course: {
+    createCourse: CreateCourse
   }
 }
 

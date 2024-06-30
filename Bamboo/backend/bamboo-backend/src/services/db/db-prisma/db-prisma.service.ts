@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Global, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
+@Global()
 @Injectable()
 export class DbPrismaService {
 
