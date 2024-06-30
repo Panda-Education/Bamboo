@@ -48,84 +48,88 @@ export default function AuthGuard(
   /**
    * Effect to ensure loaded routes align to JWT user type
    */
-  useEffect(()=>{
+  // useEffect(()=>{
+  //
+  //   if(!jwtString || jwtString===''){
+  //     return
+  //   }
 
-    if(!jwtString || jwtString===''){
-      return
-    }
-
-    (async ()=>{
-      const currentUser = jwt.deserialise(jwtString)
-      const currentPath = location.pathname
-
-      switch (currentUser.userType){
-        case UserAccountTypes.Tutor:
-          UrlScopeRestriction(
-            currentPath,
-            ['/tutor'],
-            ()=>{nav('/tutor')}
-          )
-          break
-        case UserAccountTypes.Student:
-          UrlScopeRestriction(
-            currentPath, ['/student'],
-            ()=>{nav('/student')}
-          )
-          break
-        case UserAccountTypes.Uninitialised:
-          UrlScopeRestriction(
-            currentPath, ['/welcome'],
-            ()=>{nav('/welcome')}
-          )
-          break
-        default:
-          UrlScopeRestriction(
-            currentPath, ['/login', '/register'],
-            ()=>{nav('/login')}
-          )
-          break
-      }
-    })()
-
-  }, [location])
+  //   (async ()=>{
+  //     const currentUser = jwt.deserialise(jwtString)
+  //     const currentPath = location.pathname
+  //
+  //     switch (currentUser.userType){
+  //       case UserAccountTypes.Tutor:
+  //         UrlScopeRestriction(
+  //           currentPath,
+  //           ['/tutor'],
+  //           ()=>{nav('/tutor')}
+  //         )
+  //         break
+  //       case UserAccountTypes.Student:
+  //         UrlScopeRestriction(
+  //           currentPath, ['/student'],
+  //           ()=>{nav('/student')}
+  //         )
+  //         break
+  //       case UserAccountTypes.Uninitialised:
+  //         UrlScopeRestriction(
+  //           currentPath, ['/welcome'],
+  //           ()=>{nav('/welcome')}
+  //         )
+  //         break
+  //       default:
+  //         UrlScopeRestriction(
+  //           currentPath, ['/login', '/register'],
+  //           ()=>{nav('/login')}
+  //         )
+  //         break
+  //     }
+  //   })()
+  //
+  // }, [location])
 
 
   /**
    * Effect to redirect user when JWT has changed
    */
   useEffect(() => {
-    try{
 
-      // User has logged out
-      if(!jwtString){
-        UrlScopeRestriction(location.pathname, ['/login', '/register'],
-          ()=>{nav('/login')})
-      }
-
-      // User has JWT
-      if(jwtString && jwtString!==''){
-        const jwtPayload:JwtPayload = jwt.deserialise(jwtString)
-
-        switch (jwtPayload.userType){
-          case UserAccountTypes.Student:
-            nav('/student')
-            break
-          case UserAccountTypes.Tutor:
-            nav('/tutor')
-            break
-          case UserAccountTypes.Uninitialised:
-            nav('/welcome')
-            break
-          default:
-            console.log(jwtPayload)
-            nav('/login')
-            break
-        }
-
-      }
-    } catch (e) {
-      console.error(e)
-    }
+    // TODO PDB-90
+    console.log(jwtString)
+    // try{
+    //
+    //
+    //   // User has logged out
+    //   if(!jwtString){
+    //     UrlScopeRestriction(location.pathname, ['/login', '/register'],
+    //       ()=>{nav('/login')})
+    //   }
+    //
+    //   // User has JWT
+    //   if(jwtString && jwtString!==''){
+    //     const jwtPayload:JwtPayload = jwt.deserialise(jwtString)
+    //
+    //     switch (jwtPayload.userType){
+    //       case UserAccountTypes.Student:
+    //         nav('/student')
+    //         break
+    //       case UserAccountTypes.Tutor:
+    //         nav('/tutor')
+    //         break
+    //       case UserAccountTypes.Uninitialised:
+    //         nav('/welcome')
+    //         break
+    //       default:
+    //         console.log(jwtPayload)
+    //         nav('/login')
+    //         break
+    //     }
+    //
+    //   }
+    // } catch (e) {
+    //   console.error(e)
+    // }
 
   }, [jwtString]);
 
