@@ -24,7 +24,7 @@ export default function TutorLayout() {
         </NavbarGroupContainer>
       </Navbar>
       <div className={`
-      flex-grow-1
+      w-full
       `}>
         <Outlet />
       </div>
