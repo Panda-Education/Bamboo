@@ -46,7 +46,6 @@ export class LoginController {
                 lastName: user.lastName,
                 userType: accountType
             })
-    
             res.status(200)
             .cookie('jwt', jwt, { httpOnly: true, path: '/' })
             .setHeader('authorization', `Bearer ${jwt}`)

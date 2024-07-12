@@ -13,7 +13,7 @@ export class PandaJwtService {
   ){}
 
   async sign(payload:JwtPayload):Promise<JwtString> {
-    return this.jwtService.sign(payload)
+    return this.jwtService.sign(payload, {expiresIn: '1d'})
   }
 
   async validate(token:string):Promise<JwtPayload> {

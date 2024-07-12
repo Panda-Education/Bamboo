@@ -48,46 +48,46 @@ export default function AuthGuard(
   /**
    * Effect to ensure loaded routes align to JWT user type
    */
-  // useEffect(()=>{
-  //
-  //   if(!jwtString || jwtString===''){
-  //     return
-  //   }
+  useEffect(()=>{
+  
+    if(!jwtString || jwtString===''){
+      return
+    }
 
-  //   (async ()=>{
-  //     const currentUser = jwt.deserialise(jwtString)
-  //     const currentPath = location.pathname
-  //
-  //     switch (currentUser.userType){
-  //       case UserAccountTypes.Tutor:
-  //         UrlScopeRestriction(
-  //           currentPath,
-  //           ['/tutor'],
-  //           ()=>{nav('/tutor')}
-  //         )
-  //         break
-  //       case UserAccountTypes.Student:
-  //         UrlScopeRestriction(
-  //           currentPath, ['/student'],
-  //           ()=>{nav('/student')}
-  //         )
-  //         break
-  //       case UserAccountTypes.Uninitialised:
-  //         UrlScopeRestriction(
-  //           currentPath, ['/welcome'],
-  //           ()=>{nav('/welcome')}
-  //         )
-  //         break
-  //       default:
-  //         UrlScopeRestriction(
-  //           currentPath, ['/login', '/register'],
-  //           ()=>{nav('/login')}
-  //         )
-  //         break
-  //     }
-  //   })()
-  //
-  // }, [location])
+    (async ()=>{
+      const currentUser = jwt.deserialise(jwtString)
+      const currentPath = location.pathname
+  
+      switch (currentUser.userType){
+        case UserAccountTypes.Tutor:
+          UrlScopeRestriction(
+            currentPath,
+            ['/tutor'],
+            ()=>{nav('/tutor')}
+          )
+          break
+        case UserAccountTypes.Student:
+          UrlScopeRestriction(
+            currentPath, ['/student'],
+            ()=>{nav('/student')}
+          )
+          break
+        case UserAccountTypes.Uninitialised:
+          UrlScopeRestriction(
+            currentPath, ['/welcome'],
+            ()=>{nav('/welcome')}
+          )
+          break
+        default:
+          UrlScopeRestriction(
+            currentPath, ['/login', '/register'],
+            ()=>{nav('/login')}
+          )
+          break
+      }
+    })()
+  
+  }, [location])
 
 
   /**
@@ -96,42 +96,51 @@ export default function AuthGuard(
   useEffect(() => {
 
     // TODO PDB-90
-    console.log(jwtString)
-    // try{
-    //
-    //
-    //   // User has logged out
-    //   if(!jwtString){
-    //     UrlScopeRestriction(location.pathname, ['/login', '/register'],
-    //       ()=>{nav('/login')})
-    //   }
-    //
-    //   // User has JWT
-    //   if(jwtString && jwtString!==''){
-    //     const jwtPayload:JwtPayload = jwt.deserialise(jwtString)
-    //
-    //     switch (jwtPayload.userType){
-    //       case UserAccountTypes.Student:
-    //         nav('/student')
-    //         break
-    //       case UserAccountTypes.Tutor:
-    //         nav('/tutor')
-    //         break
-    //       case UserAccountTypes.Uninitialised:
-    //         nav('/welcome')
-    //         break
-    //       default:
-    //         console.log(jwtPayload)
-    //         nav('/login')
-    //         break
-    //     }
-    //
-    //   }
-    // } catch (e) {
-    //   console.error(e)
-    // }
+    // console.log(jwtString)
+    try{
+    
+    
+      // User has logged out
+      if(!jwtString){
+        UrlScopeRestriction(location.pathname, ['/login', '/register'],
+          ()=>{nav('/login')})
+      }
 
-  }, [jwtString]);
+      // Decode the token to access the exp claim
+      const decodedToken = jwt.decode(jwtString) as JwtPayload
+
+      if (decodedToken.exp && Date.now() >= decodedToken.exp * 1000) {
+        //Token is expired and clear it from storage
+        setJwtString('') // Clear the Jwt token
+        nav('/login')
+        return
+      }
+      // User has JWT
+      if(jwtString && jwtString!==''){
+        const jwtPayload:JwtPayload = jwt.deserialise(jwtString)
+        
+        switch (jwtPayload.userType){
+          case UserAccountTypes.Student:
+            nav('/student')
+            break
+          case UserAccountTypes.Tutor:
+            nav('/tutor')
+            break
+          case UserAccountTypes.Uninitialised:
+            nav('/welcome')
+            break
+          default:
+            console.log(jwtPayload)
+            nav('/login')
+            break
+        }
+    
+      }
+    } catch (e) {
+      console.error(e)
+    }
+
+  }, [jwtString, nav, location.pathname, setJwtString]);
 
 
 
