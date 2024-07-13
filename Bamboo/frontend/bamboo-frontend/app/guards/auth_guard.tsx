@@ -5,7 +5,7 @@ import { JwtAtomSerialised } from '@/jotai/atoms/jwt-atom-serialised';
 import { useAtom } from 'jotai';
 import { JwtPayload, UserAccountTypes } from '~/types/auth/jwt.types';
 import UrlScopeRestriction from '~/utils/url-scope-restriction';
-
+import axios from 'axios';
 
 export default function AuthGuard(
   {
@@ -90,6 +90,21 @@ export default function AuthGuard(
   }, [location])
 
 
+  //Function to clear cookies and jwt token
+  const clearJwtCookie = async () => {
+    // clear HTTPOnly cookie
+    try {
+      const response = await axios.get(`${process.env.BACKEND}/auth/cookies`, {withCredentials: true})
+      if (response.status === 200) {
+        //Token is expired and clear it from storage
+        setJwtString('') // Clear the Jwt token
+        nav('/login')
+      }
+    } catch (error) {
+      console.error('Failed to clear JWT cookie',error)
+    }
+  }
+
   /**
    * Effect to redirect user when JWT has changed
    */
@@ -110,9 +125,7 @@ export default function AuthGuard(
       const decodedToken = jwt.decode(jwtString) as JwtPayload
 
       if (decodedToken.exp && Date.now() >= decodedToken.exp * 1000) {
-        //Token is expired and clear it from storage
-        setJwtString('') // Clear the Jwt token
-        nav('/login')
+        clearJwtCookie()
         return
       }
       // User has JWT
