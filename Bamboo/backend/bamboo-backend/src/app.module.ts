@@ -21,7 +21,7 @@ import { CoursesModule } from './routes/courses/courses.module';
 import { CourseService } from './services/course/course.service';
 import { TutorService } from './services/tutor/tutor.service';
 import { StudentService } from './services/student/student.service';
-
+import { CookieModule } from './routes/auth/cookies/cookies.module';
 //// Load environment variables
 configDotenv({
   path: `./.env.${process.env.NODE_ENV || 'local'}`,
@@ -49,6 +49,10 @@ configDotenv({
           {
             path: 'login',
             module: LoginModule
+          },
+          {
+            path: 'cookies',
+            module: CookieModule
           }
         ],
       },
@@ -65,6 +69,7 @@ configDotenv({
     PandaJwtModule,
     RolesGuardModule,
     CoursesModule,
+    CookieModule
   ],
   controllers: [AppController],
   providers: [

@@ -12,7 +12,9 @@ export type JwtPayload = {
   email: string,
   firstName: string,
   lastName: string,
-  userType: UserAccountTypes
+  userType: UserAccountTypes,
+  iat: number,
+  exp: number
 }
 
 export type JwtString = string
